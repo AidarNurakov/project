@@ -1,5 +1,7 @@
 const {Product} = require('../models/product.js')
 const {Favorite} = require('../models/favorites.js')
+const axios = require('axios').default
+
 
 exports.createProduct = async function(product){
     try{
@@ -77,9 +79,21 @@ exports.addProductToFavorite = async function(id, favorite) {
 
 exports.getFavoriteProducts = async function(){
     try{
-        const starred = await Product.findBy
-    }catch(e){
+        const apiUrl = 'http://localhost:5000/auth/check-user';
+        //если локалхост не работает попробовать по айпи ноута
+        const result = await axios.post(apiUrl, {
+            token: '123'
+        });
 
+        console.log(result.data);
+
+        if (data.success) {
+            // ищем фейворит через модельку  
+        } else {
+            // кидаем ошибку
+        }
+    }catch(e){
+        console.log(e.message)
     }
 }
 

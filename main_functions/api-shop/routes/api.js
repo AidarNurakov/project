@@ -64,4 +64,6 @@ router.get('/products-by-category/:id', getProductsByCategoryId)
 //добавить товар в избранное 
 router.post('/products/add-favorite/:id', addProductToFavorite)
 
+
+
 exports.router = router
