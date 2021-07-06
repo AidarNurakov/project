@@ -1,4 +1,4 @@
-const User = require('../main_functions/models/user')
+const User = require('../models/user')
 // const Role = require('./models/Role')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
