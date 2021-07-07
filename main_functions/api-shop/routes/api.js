@@ -49,7 +49,7 @@ router.delete('/products/:id', deleteProductById)
 router.get('/products-by-category/:id', getProductsByCategoryId)
 
 //добавить товар в избранное 
-router.post('/products/add-favorite/:productId', addProductToFavorite)
+router.post('/products/add-favorite', addProductToFavorite)
 
 
 router.post('/check/:id', async function(req,res){
