@@ -7,11 +7,10 @@ const favoriteProductsSchema = new schema({
         ref: "User",
         required: true
     },
-    favorites: {
-        type: Array,
-        default: [],
+    favorites: [{
+        type: mongoose.Types.ObjectId,
         ref: "Product"
-    }
+    }]
 });
 
 exports.Favorite = mongoose.model('Favorite', favoriteProductsSchema)

@@ -7,6 +7,7 @@ const {
 const axios = require('axios').default
 
 
+
 exports.createProduct = async function (product) {
     try {
         console.log('Перед поиском продукта', product)
@@ -52,26 +53,38 @@ exports.getProducts = async function () {
     }
 }
 
-exports.addProductToFavorite = async function (userId, productId) {
+exports.addProductToFavorite = async function (user, favorites) {
+
     try {
-
-        let alreadyFavorite = await Favorite.findOne({
-            user: userId
-        });
-
-        if (!alreadyFavorite) {
-            alreadyFavorite = await Favorite.create({
-                user: userId
-            });
-        }
-
-        if (alreadyFavorite.favorites.includes(productId)) {
-            return {
-
+        const apiUrl = 'http://localhost:5000/auth/check-user';
+        //если локалхост не работает попробовать по айпи ноута
+        const result = await axios.post(apiUrl, {
+            headers: {
+                'Authorization': `Bearer ${token}` 
             }
-        }
+        })
 
-        alreadyFavorite.favorites.push(productId);
+        if (result.data.success) {
+            // ищем фейворит через модельку 
+            let alreadyFavorite = await Favorite.findOne({
+                productId: favorites.productId 
+                
+            })
+            if (!alreadyFavorite) {
+                alreadyFavorite = await Favorite.create({
+                    user: user.UserId
+                })
+            if (alreadyFavorite.favorites.includes(productId)) {
+                    return {
+                        message: "Товар уже в избранных"
+                    }
+                }
+            } else {
+                return {
+                    message: "Данный товар уже в избранных найден юзер"
+                }
+            }
+            alreadyFavorite.favorites.push(productId);
         await alreadyFavorite.save();
 
         return {
@@ -80,7 +93,10 @@ exports.addProductToFavorite = async function (userId, productId) {
             data: newFavorite
         }
 
-    } catch (e) {
+        } else {
+           console.log("Ошибка с сервиса")
+        }
+    }catch (e) {
         console.log("Ошибка с сервиса при добавлении в избранные", e.message)
         return {
             message: e.message,
@@ -90,12 +106,13 @@ exports.addProductToFavorite = async function (userId, productId) {
     }
 }
 
-exports.getFavoriteProducts = async function () {
+
+exports.getFavoriteProducts = async function (token) {
     try {
         const apiUrl = 'http://localhost:5000/auth/check-user';
         //если локалхост не работает попробовать по айпи ноута
         const result = await axios.post(apiUrl, {
-            token: '123'
+            token: token
         });
 
         console.log(result.data);

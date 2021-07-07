@@ -2,6 +2,7 @@ const Router = require('express')
 const router = new Router()
 const {check} = require('express-validator')
 
+
 const { 
   login,
    checkUser, 
@@ -16,7 +17,7 @@ router.post('/registration', [
 //энд поинт для входа
 router.post('/login', login)
 
-//энд поинт аутентификации
-router.post('/check-user', checkUser)
+// //энд поинт аутентификации
+// router.post('/check-user', checkUser)
 
 module.exports = router

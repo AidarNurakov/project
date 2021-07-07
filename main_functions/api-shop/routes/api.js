@@ -17,6 +17,8 @@ const {
     getFavoriteProducts
 } = require('../controllers/product.js')
 
+const authMiddleware = require('../../api-auth/middleware/authMiddleware')
+
 
 // энд пойнты для категорий------------------------------
 
@@ -49,24 +51,6 @@ router.delete('/products/:id', deleteProductById)
 router.get('/products-by-category/:id', getProductsByCategoryId)
 
 //добавить товар в избранное 
-router.post('/products/add-favorite', addProductToFavorite)
-
-
-router.post('/check/:id', async function(req,res){
-    try{
-        const userId = "60e3446fc81c0320a0e7dc6c"
-        if(userId == req.body.userId){
-            return res.status(201).json({
-                message: "пользователь найден"
-            })
-        }
-        return res.status(404).json({
-            message: "Пользователь не найден"
-        })
-    }catch(e){
-        console.log(e.message)
-    }
-})
-
+router.post('/products/add-favorite',authMiddleware, addProductToFavorite)
 
 exports.router = router
