@@ -9,6 +9,7 @@ const {router} = require('./routes/api.js')
 app.use(bodyParser.json())
 app.use(express.json())
 app.use('/api', router)
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 5050
 

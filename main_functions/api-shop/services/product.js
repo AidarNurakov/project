@@ -1,5 +1,6 @@
 const {Product} = require('../models/product.js')
 const {Favorite} = require('../models/favorites.js')
+const User = require('../../api-auth/models/user-model')
 const axios = require('axios').default
 
 
@@ -48,25 +49,30 @@ exports.getProducts = async function() {
     }
 }
 
-exports.addProductToFavorite = async function(id, favorite) {
+exports.addProductToFavorite = async function(favorite) {
     try{
-        const alreadyFavorite = await Favorite.findById(id)
-        if(alreadyFavorite) {
+       
+            // const alreadyFavorite = await Favorite.findOne({
+            //     favorite: favorite._id
+            // })
+            // console.log("После поиска товаров", alreadyFavorite)
+            // if(alreadyFavorite) {
+            //     return {
+            //         message: "Данный товар уже в избранных!",
+            //         status: 'failed',
+            //         data: {}
+            //     }
+            // }
+            const newFavorite = await Favorite.create({
+                user: favorite.user,
+                favorites: favorite.favorites
+            })
             return {
-                message: "Данный товар уже в избранных!",
-                status: 'failed',
-                data: {}
+                message: "Товар успешно добавлен в избранные",
+                status: "success",
+                data: newFavorite
             }
-        }
-        const newFavorite = await Favorite.create({
-            user: favorite.user,
-            favorites: favorite.favorites
-        })
-        return {
-            message: "Товар успешно добавлен в избранные",
-            status: "success",
-            data: newFavorite
-        }
+        
     }catch(e){
         console.log("Ошибка с сервиса при добавлении в избранные", e.message)
         return {
@@ -116,3 +122,4 @@ exports.deleteProductById = async function(id){
     }
     
 }
+

@@ -39,11 +39,32 @@ exports.getProducts = async function (req,res) {
 }
 
 exports.addProductToFavorite = async function (req,res) {
-
+    try{
+        const userId = "60e3446fc81c0320a0e7dc6c"
+        const product = await getProductById(req.params.productId)
+        if(product) {
+            if(userId == req.body.userId) {
+                const favoritesData = {
+                    ...req.body
+                }
+                const result = await addProductToFavorite(favoritesData)
+                res.status(201).json(result)
+            
+               }
+               return res.status(404).json({
+                message: "Данный пользователь не существует либо не авторизован!"
+            })
+        }
+        res.status(404).json({ message: "Товар не найден"})
+       
+        }catch(e){
+            res.status(500).json({
+                message: "Ошибка сервера" + e.message
+            })
+           }
 }
 
 exports.getFavoriteProducts = async function (req,res){
-
 }
 
 exports.getProductById = async function (req, res) {
@@ -95,3 +116,4 @@ exports.getProductsByCategoryId = async function (req, res) {
       }
     })
   }
+

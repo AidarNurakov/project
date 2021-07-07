@@ -1,10 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const {check} = require('express-validator')
-
-const {
-    registration
-} = require('../controllers/registration')
 
 const {
     getCategories,
@@ -21,14 +16,6 @@ const {
     addProductToFavorite,
     getFavoriteProducts
 } = require('../controllers/product.js')
-
-// Регистрация пользователя
-
-router.post('/registration', [
-    check('username', "Имя пользователя не может быть пустым").notEmpty(),
-    check('password', "Пароль должен быть больше 4 и меньше 10 символов").isLength({min:4, max:10})]
-    , registration)
-
 
 
 // энд пойнты для категорий------------------------------
@@ -62,8 +49,24 @@ router.delete('/products/:id', deleteProductById)
 router.get('/products-by-category/:id', getProductsByCategoryId)
 
 //добавить товар в избранное 
-router.post('/products/add-favorite/:id', addProductToFavorite)
+router.post('/products/add-favorite/:productId', addProductToFavorite)
 
+
+router.post('/check/:id', async function(req,res){
+    try{
+        const userId = "60e3446fc81c0320a0e7dc6c"
+        if(userId == req.body.userId){
+            return res.status(201).json({
+                message: "пользователь найден"
+            })
+        }
+        return res.status(404).json({
+            message: "Пользователь не найден"
+        })
+    }catch(e){
+        console.log(e.message)
+    }
+})
 
 
 exports.router = router
