@@ -6,11 +6,9 @@ const {
     deleteProductById,
     getProductById
 } = require('../services/product.js')
-
 const {
     getCategoryById
 } = require('../services/category')
-const { default: axios } = require('axios')
 
 exports.createProduct = async function (req, res) {
     try {
@@ -45,28 +43,22 @@ exports.getProducts = async function (req, res) {
 exports.addProductToFavorite = async function (req, res) {
     try {
         const productExists = await getProductById(req.body.productId)
+        
         if (!productExists) {
             return res.status(404).json({
                 message: "Товар по данному id не существует"
             })
         }
-        const token = req.headers.authorization.split(' ')[1]
-        console.log('token: ', token);
 
-        if (token) {
-            const favoritesData = {
-                ...req.body
-            }
-            const result = await addProductToFavorite(favoritesData)
+        const user = req.user;
+
+        
+            const result = await addProductToFavorite(user.id, req.body.productId)
             res.status(201).json(result)
 
-        }
-        return res.status(404).json({
-            message: "Данный пользователь не существует либо не авторизован!"
-        })
     } catch (e) {
         res.status(500).json({
-            message: "Ошибка сервера" + e.message
+            message: "Ошибка сервера " + e.message
         })
     }
 }

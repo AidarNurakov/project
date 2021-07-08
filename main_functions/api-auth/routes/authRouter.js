@@ -7,6 +7,8 @@ const {
   login,
    checkUser, 
    registration } = require('../controllers/authController')
+   
+const authMiddleware = require('../middleware/authMiddleware')
 
 // Регистрация пользователя
 router.post('/registration', [
@@ -18,6 +20,6 @@ router.post('/registration', [
 router.post('/login', login)
 
 // //энд поинт аутентификации
-// router.post('/check-user', checkUser)
+router.post('/check-user', authMiddleware)
 
 module.exports = router

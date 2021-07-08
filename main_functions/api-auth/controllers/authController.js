@@ -6,8 +6,8 @@ const { validationResult } = require('express-validator')
 
 
 generateAccessToken = (id) => {
-    const payLoad = { id }
-    return jwt.sign(payLoad, secret, {expiresIn: "24h"} )
+  
+    return jwt.sign({ id }, secret, {expiresIn: "24h"} )
 }
 
 exports.registration = async function(req,res) {
@@ -53,14 +53,6 @@ exports.login = async function(req, res){
             })
         }
     }
-//сессионный ключ Karl:1234 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTU3NTA5NWU4MjQwNDJlYzkxOTIwYyIsImlhdCI6MTYyNTY1MDU0MiwiZXhwIjoxNjI1NzM2OTQyfQ.-zPNyluXDg6apGg-u33Uy15ZjFfxRzttIODgEuB0vjo"
 
-exports.checkUser = async function(req,res){
-    const  token  = req.headers.authorization;
 
-    res.status(200).json({
-      message: 'Токен правильный',
-      success: true
-    })
-  }
 

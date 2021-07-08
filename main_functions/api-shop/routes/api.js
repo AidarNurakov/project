@@ -17,8 +17,7 @@ const {
     getFavoriteProducts
 } = require('../controllers/product.js')
 
-const authMiddleware = require('../../api-auth/middleware/authMiddleware')
-
+const  axiosRequest  = require('../middlewares/axiosRequest')
 
 // энд пойнты для категорий------------------------------
 
@@ -51,6 +50,6 @@ router.delete('/products/:id', deleteProductById)
 router.get('/products-by-category/:id', getProductsByCategoryId)
 
 //добавить товар в избранное 
-router.post('/products/add-favorite',authMiddleware, addProductToFavorite)
+router.post('/products/add-favorite',axiosRequest, addProductToFavorite)
 
 exports.router = router

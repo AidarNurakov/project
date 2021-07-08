@@ -5,9 +5,7 @@ const {
     Favorite
 } = require('../models/favorites.js')
 const axios = require('axios').default
-const { body } = require('express-validator')
-const jwt = require('jsonwebtoken')
-const { secret } = require('../../api-auth/config.js').jwt
+
 
 
 
@@ -56,45 +54,32 @@ exports.getProducts = async function () {
     }
 }
 
-exports.addProductToFavorite = async function (user, favorites) {
 
+exports.addProductToFavorite = async function (userId, productId) {
     try {
-        const apiUrl = 'http://localhost:5000/auth/check-user';
-        //если локалхост не работает попробовать по айпи ноута
-        const result = await axios.post(apiUrl, data, {
-            headers: {
-                'Authorization': `Bearer ${ secret }` 
-            }
-        })
-
-        if (result.data.success) {
             // ищем фейворит через модельку 
-            let alreadyFavorite = await Favorite.findOne({ productId })
+            let alreadyFavorite = await Favorite.findOne({ user: userId })
+            
             if (!alreadyFavorite) {
                 alreadyFavorite = await Favorite.create({
-                    user: user.userId
+                    user: userId
                 })
+            
+            } 
+            
             if (alreadyFavorite.favorites.includes(productId)) {
-                    return {
-                        message: "Товар уже в избранных"
-                    }
-                }
-            } else {
                 return {
-                    message: "Данный товар уже в избранных найден юзер"
+                    message: "Товар уже в избранных"
                 }
             }
+            
             alreadyFavorite.favorites.push(productId);
-        await alreadyFavorite.save();
+            await alreadyFavorite.save();
 
         return {
             message: "Товар успешно добавлен в избранные",
             status: "success",
-            data: newFavorite
-        }
-
-        } else {
-           console.log("Ошибка с сервиса")
+            data: alreadyFavorite
         }
     }catch (e) {
         console.log("Ошибка с сервиса при добавлении в избранные", e.message)
@@ -105,7 +90,6 @@ exports.addProductToFavorite = async function (user, favorites) {
         }
     }
 }
-
 
 exports.getFavoriteProducts = async function (token) {
     try {
