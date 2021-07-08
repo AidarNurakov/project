@@ -10,6 +10,7 @@ const {
 const {
     getCategoryById
 } = require('../services/category')
+const { default: axios } = require('axios')
 
 exports.createProduct = async function (req, res) {
     try {

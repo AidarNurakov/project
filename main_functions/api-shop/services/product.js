@@ -5,6 +5,9 @@ const {
     Favorite
 } = require('../models/favorites.js')
 const axios = require('axios').default
+const { body } = require('express-validator')
+const jwt = require('jsonwebtoken')
+const { secret } = require('../../api-auth/config.js').jwt
 
 
 
@@ -58,21 +61,18 @@ exports.addProductToFavorite = async function (user, favorites) {
     try {
         const apiUrl = 'http://localhost:5000/auth/check-user';
         //если локалхост не работает попробовать по айпи ноута
-        const result = await axios.post(apiUrl, {
+        const result = await axios.post(apiUrl, data, {
             headers: {
-                'Authorization': `Bearer ${token}` 
+                'Authorization': `Bearer ${ secret }` 
             }
         })
 
         if (result.data.success) {
             // ищем фейворит через модельку 
-            let alreadyFavorite = await Favorite.findOne({
-                productId: favorites.productId 
-                
-            })
+            let alreadyFavorite = await Favorite.findOne({ productId })
             if (!alreadyFavorite) {
                 alreadyFavorite = await Favorite.create({
-                    user: user.UserId
+                    user: user.userId
                 })
             if (alreadyFavorite.favorites.includes(productId)) {
                     return {
