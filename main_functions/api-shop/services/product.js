@@ -4,8 +4,6 @@ const {
 const {
     Favorite
 } = require('../models/favorites.js')
-const axios = require('axios').default
-
 
 
 
@@ -79,7 +77,7 @@ exports.addProductToFavorite = async function (userId, productId) {
         return {
             message: "Товар успешно добавлен в избранные",
             status: "success",
-            data: alreadyFavorite
+            // data: alreadyFavorite
         }
     }catch (e) {
         console.log("Ошибка с сервиса при добавлении в избранные", e.message)
@@ -91,23 +89,12 @@ exports.addProductToFavorite = async function (userId, productId) {
     }
 }
 
-exports.getFavoriteProducts = async function (token) {
+exports.getFavoriteProducts = async function () {
     try {
-        const apiUrl = 'http://localhost:5000/auth/check-user';
-        //если локалхост не работает попробовать по айпи ноута
-        const result = await axios.post(apiUrl, {
-            token: token
-        });
-
-        console.log(result.data);
-
-        if (data.success) {
-            // ищем фейворит через модельку  
-        } else {
-            // кидаем ошибку
-        }
+        const favorites = await Favorite.find()
+        return favorites
     } catch (e) {
-        console.log(e.message)
+        console.log("Ошибка с сервера getFavorites", e.message)
     }
 }
 

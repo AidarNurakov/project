@@ -39,7 +39,6 @@ exports.getProducts = async function (req, res) {
     }
 }
 
-
 exports.addProductToFavorite = async function (req, res) {
     try {
         const productExists = await getProductById(req.body.productId)
@@ -64,7 +63,20 @@ exports.addProductToFavorite = async function (req, res) {
 }
 
 exports.getFavoriteProducts = async function (req, res) {
+    try{
+        const favorites = await getFavoriteProducts()
+        console.log('после гет фейворит:', favorites)
 
+        res.status(200).json({
+            message: "Получены все избранные товары",
+            data: favorites
+        })
+    }catch(e){
+        console.log('Ошибка с контроллера getFavorite', e.message)
+        res.status(404).json({
+            message: e.message
+        })
+}
 }
 
 exports.getProductById = async function (req, res) {

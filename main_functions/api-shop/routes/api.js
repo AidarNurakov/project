@@ -52,4 +52,7 @@ router.get('/products-by-category/:id', getProductsByCategoryId)
 //добавить товар в избранное 
 router.post('/products/add-favorite',axiosRequest, addProductToFavorite)
 
+//Получить избранные товары
+router.get('/favorites',axiosRequest, getFavoriteProducts)
+
 exports.router = router
