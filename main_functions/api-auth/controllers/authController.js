@@ -7,7 +7,7 @@ const { validationResult } = require('express-validator')
 
 generateAccessToken = (id) => {
   
-    return jwt.sign({ id }, secret, {expiresIn: "24h"} )
+    return jwt.sign({ id }, secret, {expiresIn: "10m"} )
 }
 
 exports.registration = async function(req,res) {
