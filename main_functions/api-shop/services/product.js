@@ -77,7 +77,7 @@ exports.addProductToFavorite = async function (userId, productId) {
         return {
             message: "Товар успешно добавлен в избранные",
             status: "success",
-            // data: alreadyFavorite
+            data: alreadyFavorite
         }
     }catch (e) {
         console.log("Ошибка с сервиса при добавлении в избранные", e.message)
@@ -89,12 +89,13 @@ exports.addProductToFavorite = async function (userId, productId) {
     }
 }
 
-exports.getFavoriteProducts = async function () {
+exports.getFavoriteProducts = async function (userId) {
     try {
-        const favorites = await Favorite.find()
-        return favorites
+        const result = await Favorite.findByIdAndUpdate({user: userId})
+        console.log(result)
+        return result
     } catch (e) {
-        console.log("Ошибка с сервера getFavorites", e.message)
+        console.log("Ошибка с сервиса getFavorites", e.message)
     }
 }
 

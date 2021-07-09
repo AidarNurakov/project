@@ -64,12 +64,12 @@ exports.addProductToFavorite = async function (req, res) {
 
 exports.getFavoriteProducts = async function (req, res) {
     try{
-        const favorites = await getFavoriteProducts()
-        console.log('после гет фейворит:', favorites)
-
-        res.status(200).json({
+        const decodedUser = req.user;
+        console.log(decodedUser)
+        const result = await getFavoriteProducts(decodedUser.id)
+        res.status(201).json({
             message: "Получены все избранные товары",
-            data: favorites
+            data: result
         })
     }catch(e){
         console.log('Ошибка с контроллера getFavorite', e.message)

@@ -16,15 +16,3 @@ const favoriteProductsSchema = new schema({
 exports.Favorite = mongoose.model('Favorite', favoriteProductsSchema)
 
 
-
-// {
-//   user: id,
-//   favorites: [
-//     'id1',
-//     'id2'
-//   ]
-// }
-
-
-
-//В массиве должны быть айди товаров добавленных в избранное
